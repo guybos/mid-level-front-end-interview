@@ -1,0 +1,18 @@
+.App {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    justify-content: center;
+}
+
+.employees, .management {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.App .list-group-item {
+    display: flex;
+    justify-content: space-between;
+}
