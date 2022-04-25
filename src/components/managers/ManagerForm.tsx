@@ -19,6 +19,10 @@ function EmployeeForm({
     close
 }: ManagerFormProps) {
 
+    
+    const dispatch = useDispatch();
+    const { currentManager } = useSelector(currentManagerSelector);
+
     useEffect(() => {
         if (manager !== undefined) {
             const request: ManagerRequest = {
@@ -27,18 +31,15 @@ function EmployeeForm({
             }
             dispatch(fetchManagerAction(request));
         }
-    });
+    },[manager]);
 
 
-    const dispatch = useDispatch();
-    const { currentManager } = useSelector(currentManagerSelector);
     const [validated, setValidated] = useState(false);
-
-    const [firstName, setFirstName] = useState(currentManager?.first_name!);
-    const [lastName, setLastName] = useState(currentManager?.last_name!);
-    const [email, setEmail] = useState(currentManager?.email!);
-    const [ipAdress, setIpAdress] = useState(currentManager?.ip_address!);
-    const [gender, setGender] = useState(currentManager?.gender!);
+    const [firstName, setFirstName] = useState(manager?.first_name!);
+    const [lastName, setLastName] = useState(manager?.last_name!);
+    const [email, setEmail] = useState(manager?.email!);
+    const [ipAdress, setIpAdress] = useState(manager?.ip_address!);
+    const [gender, setGender] = useState(manager?.gender!);
 
     const update = async (person: Manager, list: Manager[]) =>{
         console.log(person?.id!);

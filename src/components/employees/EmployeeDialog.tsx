@@ -1,5 +1,3 @@
-import { groupCollapsed } from "console";
-import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { Employee } from "../../interfaces/Employee";
 import EmployeeForm from "./EmployeeForm";
@@ -19,7 +17,7 @@ function EmployeeDialog({
     show,
     close
 }: DialogProps){
-    
+
     return (
         <Modal show ={show} onHide={close}>
             <Modal.Header closeButton>

@@ -1,6 +1,11 @@
 import {Employee} from "../interfaces/Employee";
 import { Manager } from "../interfaces/Manager";
 
+
+export const checkEmployeeId = (employee: Employee, id: number): boolean =>{
+    return employee.id == id;
+}
+
 export const checkEqualEmployees = (employee1: Employee, employee2: Employee) : boolean =>{
     return (employee1.first_name == employee2.first_name) &&
     (employee1.last_name == employee2.last_name ) &&
@@ -10,6 +15,9 @@ export const checkEqualEmployees = (employee1: Employee, employee2: Employee) : 
     (employee1.ip_address == employee2.ip_address)
 }
 
+export const checkManagerId = (manager: Manager, id: number): boolean =>{
+    return manager.id == id;
+}
 
 export const checkEqualManager = (manager1: Manager, manager2: Manager) : boolean =>{
     return (manager1.first_name == manager2.first_name) &&

@@ -1,39 +1,36 @@
-import { useDispatch, useSelector } from 'react-redux';
-import {ListGroup, Badge} from 'react-bootstrap';
-import {fibonacci} from '../../utils/GeneralFunctions';
-import { Employee} from '../../interfaces/Employee';
-import { currentEmployeeSelector } from '../../store/employees/EmployeeSelectors';
-import { deleteEmployeeAction, updateEmployeeAction } from '../../store/employees/EmployeeActions';
-import { currentManagerSelector } from '../../store/managers/managerSelectors';
-import EmployeeDialog from './EmployeeDialog';
-import { useState } from 'react';
-import { checkEqualEmployees } from '../../utils/CompareFunctions';
+import { useDispatch } from 'react-redux';
+import { ListGroup, Badge, Button } from 'react-bootstrap';
+import { fibonacci } from '../../utils/GeneralFunctions';
+import { Employee } from '../../interfaces/Employee';
+import { deleteEmployeeAction } from '../../store/employees/EmployeeActions';
 import { converEmployeeToManager } from '../../utils/ConverFunctions';
 import { addManagerAction } from '../../store/managers/managerActions';
-import {Manager} from '../../interfaces/Manager';
+import { Manager } from '../../interfaces/Manager';
 
-type EmployeeListProps ={
+type EmployeeListProps = {
     employees: Employee[]
     managers: Manager[],
+    setAction: (action: string) => void,
+    setEmployee: (employee: Employee) =>void,
+    handleShow: () => void,
 }
 
 function EmployeeList({
     employees,
-    managers
+    managers,
+    setAction,
+    handleShow,
+    setEmployee
 }: EmployeeListProps) {
 
     const dispatch = useDispatch();
 
-    const [show, setShow] = useState(false);
-    const [actionName, setActionName] = useState('');
-    const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
-
-    const Transfer = async(employee: Employee) =>{
+    const Transfer = async (employee: Employee) => {
+        console.log("start Transfer");
         const newManager = converEmployeeToManager(employee);
         dispatch(deleteEmployeeAction({
-            employee: employee, 
-            all:employees!
+            employee: employee,
+            all: employees!
         }));
         dispatch(addManagerAction({
             manager: newManager,
@@ -41,8 +38,10 @@ function EmployeeList({
         }))
     }
 
-    const openDialog = (chosenAction: string) =>{
-        setActionName(chosenAction);
+    const openDialog = (chosenAction: string, employee: Employee) => {
+        console.log("start Action " + chosenAction);
+        setAction(chosenAction);
+        setEmployee(employee);
         handleShow();
     }
 
@@ -51,13 +50,12 @@ function EmployeeList({
             {
                 employees!.map((employee, index) =>
                 (
-                    <ListGroup.Item key={employee.first_name +index}>
+                    <ListGroup.Item key={employee.first_name + index}>
                         <span>{employee.first_name} {employee.last_name}</span>
-                        <Badge bg="primary" onClick={(e) => Transfer(employee)}>Transfer</Badge>
-                        <Badge bg="primary" onClick={(e) => openDialog("update")}>update</Badge>
-                        <Badge bg="primary" onClick={(e) => openDialog("delete")}>delete</Badge>
+                        <Button onClick={(e) => Transfer(employee)}>Transfer</Button>
+                        <Button onClick={(e) => openDialog("update", employee)}>update</Button>
+                        <Button onClick={(e) => openDialog("delete", employee)}>delete</Button>
                         <Badge bg="primary">{fibonacci()}</Badge>
-                        <EmployeeDialog header={actionName} list={employees} employee={employee} show={show} close={handleClose} />
                     </ListGroup.Item>
                 ))
             }

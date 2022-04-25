@@ -19,6 +19,9 @@ function EmployeeForm({
     close
 }: EmployeeFormProps) {
 
+    const dispatch = useDispatch();
+    const { currentEmployee } = useSelector(currentEmployeeSelector);
+
     useEffect(() => {
         if (employee !== undefined) {
             const request: EmployeeRequest = {
@@ -27,18 +30,16 @@ function EmployeeForm({
             }
             dispatch(fetchEmployeeAction(request));
         }
-    });
+    },[employee]);
 
 
-    const dispatch = useDispatch();
-    const { currentEmployee } = useSelector(currentEmployeeSelector);
+    
     const [validated, setValidated] = useState(false);
-
-    const [firstName, setFirstName] = useState(currentEmployee?.first_name!);
-    const [lastName, setLastName] = useState(currentEmployee?.last_name!);
-    const [email, setEmail] = useState(currentEmployee?.email!);
-    const [ipAdress, setIpAdress] = useState(currentEmployee?.ip_address!);
-    const [gender, setGender] = useState(currentEmployee?.gender!);
+    const [firstName, setFirstName] = useState(employee?.first_name!);
+    const [lastName, setLastName] = useState(employee?.last_name!);
+    const [email, setEmail] = useState(employee?.email!);
+    const [ipAdress, setIpAdress] = useState(employee?.ip_address!);
+    const [gender, setGender] = useState(employee?.gender!);
 
     const update = async (person: Employee, list: Employee[]) =>{
         console.log(person?.id!);

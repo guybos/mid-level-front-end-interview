@@ -15,10 +15,12 @@ const App =() => {
     const dispatch = useDispatch();
     const { employees } = useSelector(currentEmployeeSelector);
     const { managers } = useSelector(currentManagerSelector);
+    
     useEffect(() => {
         dispatch(fetchAllManagerAction());
         dispatch(fetchAllEmployeeAction());
-    }, []);
+    },[]);
+
     return (
         <div className="App">
             <EmployeeDiv 

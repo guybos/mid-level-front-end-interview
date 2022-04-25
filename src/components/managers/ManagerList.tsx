@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import {ListGroup, Badge} from 'react-bootstrap';
+import {ListGroup, Badge, Button} from 'react-bootstrap';
 import {fibonacci} from '../../utils/GeneralFunctions';
 import { Manager} from '../../interfaces/Manager';
 import { currentEmployeeSelector } from '../../store/employees/EmployeeSelectors';
@@ -13,19 +13,21 @@ import { addManagerAction } from '../../store/managers/managerActions';
 
 type ManagerListProps ={
     managers: Manager[]
+    setAction: (action: string) => void,
+    setManager: (employee: Manager) =>void,
+    handleShow: () => void,
 }
 
 function EmployeeList({
     managers,
+    setAction,
+    setManager,
+    handleShow,
 }: ManagerListProps) {
 
-    const [show, setShow] = useState(false);
-    const [actionName, setActionName] = useState('');
-    const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
-
-    const openDialog = (chosenAction: string) =>{
-        setActionName(chosenAction);
+    const openDialog = (chosenAction: string, manager: Manager) =>{
+        setAction(chosenAction);
+        setManager(manager);
         handleShow();
     }
 
@@ -36,10 +38,9 @@ function EmployeeList({
                 (
                     <ListGroup.Item key={manager.first_name + index}>
                         <span>{manager.first_name} {manager.last_name}</span>
-                        <Badge bg="primary" onClick={(e) => openDialog("update")}>update</Badge>
-                        <Badge bg="primary" onClick={(e) => openDialog("delete")}>delete</Badge>
+                        <Button onClick={(e) => openDialog("update", manager)}>update</Button>
+                        <Button onClick={(e) => openDialog("delete", manager)}>delete</Button>
                         <Badge bg="primary">{fibonacci()}</Badge>
-                        <ManagerDialog header={actionName} list={managers} manager={manager} show={show} close={handleClose} />
                     </ListGroup.Item>
                 ))
             }
