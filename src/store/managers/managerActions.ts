@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { ManagerRequest } from "../../interfaces/Manager";
+import { Manager, ManagerRequest } from "../../interfaces/Manager";
 
 export const FETECH_MANAGER_ACTION = 'fetchManagerAction';
 export const FETECH_ALL_MANAGER_ACTION = 'fetchAllManagerAction';
@@ -12,8 +12,9 @@ export const fetchManagerAction = (request: ManagerRequest): PayloadAction<Manag
     payload: request
 })
 
-export const fetchAllManagerAction = ()=> ({
+export const fetchAllManagerAction = (request?: Manager[]): PayloadAction<Manager[]> => ({
     type: FETECH_ALL_MANAGER_ACTION,
+    payload: request!,
 })
 
 export const addManagerAction = (request: ManagerRequest): PayloadAction<ManagerRequest> => ({

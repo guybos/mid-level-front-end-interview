@@ -5,7 +5,7 @@ import Api from "../../api/Api";
 import { StoreState } from "../store";
 import { FETECH_EMPLOYEE_ACTION, ADD_EMPLOYEE_ACTION, UPDATE_EMPLOYEE_ACTION, DELETE_EMPLOYEE_ACTION, FETCH_ALL_EMPLOYEES_ACTION } from "./EmployeeActions";
 import { setCurrentEmployeeStoreAction, setCurrentEmployeesStoreAction} from './EmployeeStore';
-import { EmployeeRequest } from "../../interfaces/Employee";
+import { Employee, EmployeeRequest } from "../../interfaces/Employee";
 import {ApiError} from "../../utils/GeneralFunctions";
 
 const fetchEmployeeEpic: Epic = (action$, state$: StateObservable<StoreState>) => action$.pipe(
@@ -22,8 +22,8 @@ const fetchEmployeeEpic: Epic = (action$, state$: StateObservable<StoreState>) =
 
 const fetchAllEmployeeEpic: Epic = (action$, state$: StateObservable<StoreState>) => action$.pipe(
     ofType(FETCH_ALL_EMPLOYEES_ACTION),
-    mergeMap(() =>
-    from(Api.Employees.GetAll())
+    mergeMap(({payload}: PayloadAction<Employee[]>)  =>
+    from(Api.Employees.GetAll(payload!))
     .pipe(
         map(employees => setCurrentEmployeesStoreAction({
             employees,  

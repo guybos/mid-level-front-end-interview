@@ -42,16 +42,13 @@ function EmployeeForm({
     const [gender, setGender] = useState(employee?.gender!);
 
     const update = async (person: Employee, list: Employee[]) =>{
-        console.log(person?.id!);
         dispatch(updateEmployeeAction({employee: person, all:list}));
     }
 
     const add= async (person: Employee, list: Employee[]) =>{
-        console.log(person?.id!);
         dispatch(addEmployeeAction({employee: person, all:list}));
     }
     const deleteFunc = async (person: Employee, list: Employee[]) =>{
-        console.log(person?.id!);
         dispatch(deleteEmployeeAction({employee: person, all:list}));
     }
 
@@ -71,7 +68,7 @@ function EmployeeForm({
         }
         if(actionName == "update"){
             update(employee, list!);
-        }else if(actionName ="add"){
+        }else if(actionName == "add"){
             add(employee, list!);
         }else{
             deleteFunc(employee, list!);

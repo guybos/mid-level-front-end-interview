@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { EmployeeRequest } from "../../interfaces/Employee";
+import { EmployeeRequest, Employee } from "../../interfaces/Employee";
 
 export const FETECH_EMPLOYEE_ACTION = 'fetchEmployeeAction';
 export const FETCH_ALL_EMPLOYEES_ACTION = 'fetchAllEmployeeAction'
@@ -12,8 +12,9 @@ export const fetchEmployeeAction = (request: EmployeeRequest): PayloadAction<Emp
     payload: request
 })
 
-export const fetchAllEmployeeAction = () => ({
+export const fetchAllEmployeeAction = (request?: Employee[]): PayloadAction<Employee[]> => ({
     type: FETCH_ALL_EMPLOYEES_ACTION,
+    payload: request!,
 })
 
 export const addEmployeeAction = (request: EmployeeRequest): PayloadAction<EmployeeRequest> => ({

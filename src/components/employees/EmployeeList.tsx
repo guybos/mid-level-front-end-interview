@@ -26,7 +26,6 @@ function EmployeeList({
     const dispatch = useDispatch();
 
     const Transfer = async (employee: Employee) => {
-        console.log("start Transfer");
         const newManager = converEmployeeToManager(employee);
         dispatch(deleteEmployeeAction({
             employee: employee,
@@ -39,7 +38,6 @@ function EmployeeList({
     }
 
     const openDialog = (chosenAction: string, employee: Employee) => {
-        console.log("start Action " + chosenAction);
         setAction(chosenAction);
         setEmployee(employee);
         handleShow();

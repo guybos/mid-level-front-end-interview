@@ -1,27 +1,37 @@
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import Filter from '../Filter';
 import EmployeeList from './EmployeeList';
 import { Employee } from '../../interfaces/Employee';
 import { Manager } from '../../interfaces/Manager';
 import { Button } from "react-bootstrap";
 import EmployeeDialog from "./EmployeeDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { currentManagerSelector } from "../../store/managers/managerSelectors";
+import { currentEmployeeSelector } from "../../store/employees/EmployeeSelectors";
+import { fetchAllManagerAction } from "../../store/managers/managerActions";
+import { fetchAllEmployeeAction } from "../../store/employees/EmployeeActions";
 
 
 type EmployeeDivProps = {
     className: string,
     header: string,
     placeHolder: string,
-    employees: Employee[],
-    managers: Manager[]
 }
 
 function EmployeeDiv({
     className,
     header,
     placeHolder,
-    employees,
-    managers
 }: EmployeeDivProps) {
+
+    const dispatch = useDispatch();
+    const { employees } = useSelector(currentEmployeeSelector);
+    const { managers } = useSelector(currentManagerSelector);
+    
+    useEffect(() => {
+        dispatch(fetchAllManagerAction(managers));
+        dispatch(fetchAllEmployeeAction(employees));
+    },[managers, employees]);
 
     const emptyEmployee: Employee = {
         id: 0,
@@ -31,6 +41,7 @@ function EmployeeDiv({
         gender: "",
         ip_address: ""
     };
+
     const [FilterValue, setFilterValue] = useState('');
     const [show, setShow] = useState(false);
     const [actionName, setActionName] = useState('');
@@ -40,8 +51,6 @@ function EmployeeDiv({
         setShow(false);
         setCurrentEmployee(emptyEmployee);
     };
-
-
 
     const filteredList = employees!.filter(person => {
         const name = person.first_name + ' ' + person.last_name;
@@ -60,7 +69,7 @@ function EmployeeDiv({
             <Filter value={FilterValue} onChange={setFilterValue} placeHolder={placeHolder} />
             <Button onClick={showDialog}>Add Employee</Button>
             <EmployeeList handleShow={handleShow} setEmployee={setCurrentEmployee}
-             setAction={setActionName} employees={filteredList!} managers={managers} />
+             setAction={setActionName} employees={filteredList!} managers={managers!} />
             <EmployeeDialog header={actionName} list={employees!} employee={currentEmployee!} show={show} close={handleClose} />
         </div>
     );

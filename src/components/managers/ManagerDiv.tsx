@@ -1,24 +1,32 @@
-import { useState} from "react";
+import { useEffect, useState} from "react";
 import  Filter from '../Filter';
 import  ManagerList from './ManagerList';
 import { Button } from "react-bootstrap";
 import ManagerDialog from "./ManagerDialog";
 import { Manager } from "../../interfaces/Manager";
+import { useDispatch, useSelector } from "react-redux";
+import { currentManagerSelector } from "../../store/managers/managerSelectors";
+import { fetchAllManagerAction } from "../../store/managers/managerActions";
 
 
 type ManagerDivProps = {
     className: string,
     header: string,
     placeHolder: string,
-    managers: Manager[],
 }
 
 function ManagerDiv({
     className,
     header,
     placeHolder,
-    managers
 }: ManagerDivProps) {
+
+    const dispatch = useDispatch();
+    const { managers } = useSelector(currentManagerSelector);
+    
+    useEffect(() => {
+        dispatch(fetchAllManagerAction(managers));
+    },[managers]);
 
     const emptyManager: Manager = {
         id: 0,

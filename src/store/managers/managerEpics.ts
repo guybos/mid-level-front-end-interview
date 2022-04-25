@@ -5,7 +5,7 @@ import Api from "../../api/Api";
 import { StoreState } from "../store";
 import { FETECH_MANAGER_ACTION, ADD_MANAGER_ACTION, UPDATE_MANAGER_ACTION, DELETE_MANAGER_ACTION, FETECH_ALL_MANAGER_ACTION } from "./managerActions";
 import { setCurrentManagerStoreAction, setCurrentManagersStoreAction} from './managerStore';
-import { ManagerRequest } from "../../interfaces/Manager";
+import { Manager, ManagerRequest } from "../../interfaces/Manager";
 import { ApiError } from "../../utils/GeneralFunctions";
 
 const fetchManagerEpic: Epic = (action$, state$: StateObservable<StoreState>) => action$.pipe(
@@ -22,8 +22,8 @@ const fetchManagerEpic: Epic = (action$, state$: StateObservable<StoreState>) =>
 
 const fetchAllManagerEpic: Epic = (action$, state$: StateObservable<StoreState>) => action$.pipe(
     ofType(FETECH_ALL_MANAGER_ACTION),
-    mergeMap(() =>
-    from(Api.Management.GetAll())
+    mergeMap(({payload}: PayloadAction<Manager[]>) =>
+    from(Api.Management.GetAll(payload!))
     .pipe(
         map(managers => setCurrentManagersStoreAction({
             managers,  
